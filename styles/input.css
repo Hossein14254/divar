@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+
+    body {
+        direction: rtl;
+        overflow: hidden;
+        background-color: #EBEFFF;
+    }
+    body .sing{
+        direction: ltr;
+    }
+    .logo{
+        margin-left: 320px;
+        margin-right: 20px;
+    }
+    @font-face {
+    font-family: 'Vazirmatn-Black';
+    src: url('/font/Vazirmatn-SemiBold.woff2') format('woff2'),
+         url('/font/Vazirmatn-SemiBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Vazirmatn-Black', sans-serif;
+}
+.zarafe{
+    background-color: rgb(256, 256, 256,0.3);
+    }
+}
