@@ -1,146 +1,140 @@
-import React from 'react'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { FaArrowLeft } from 'react-icons/fa'
-import { FaExclamationTriangle } from 'react-icons/fa'
-import { FaMoneyBill, FaCity } from 'react-icons/fa'
-import { FaList, FaExchangeAlt, FaStar, FaInfoCircle } from 'react-icons/fa'
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { FaStar } from 'react-icons/fa';
+import { useRouter } from 'next/router';
+import CommentBox from '@/components/newcomment';
+import Fetchcomment from '@/components/fetchcomment';
 
-export default function ID() {
-  const [nums, setNums] = useState(0)
-  const [data, setData] = useState([])
-  const [isLoding, setIsloding] = useState(true)
+const ProductPage = () => {
+  const router = useRouter();
+  const [id,setId]=useState(null)
+  const [db, setDb] = useState(null);
+  const [data, setData] = useState([]);
+  const [isLoding, setIsloding] = useState(true);
+  const [message, setMessage] = useState('');
+  const [randomNumber, setRandomNumber] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/shop')
-        const data = await response.json()
-        setData(data)
-        console.log(data)
-        setMessage(data.message)
+        const response = await fetch('/api/shop');
+        const data = await response.json();
+        setData(data);
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error('Error fetching data:', error);
+        setMessage('There was an error fetching the data.');
       } finally {
-        setIsloding(false)
+        setIsloding(false);
       }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (router.query.id && data.length > 0) {
+      const dbS = data.find(res => res._id == router.query.id);
+      setDb(dbS);
+      setId(router.query.id)
+      console.log("code   :     "+id)
+      const random = Math.floor(Math.random() * 5) + 1;
+      setRandomNumber(random);
     }
+  }, [router.query.id, data]);
 
-    setNums(0)
-    fetchData()
-  }, [])
-  function polic() {
-    setNums(nums + 1)
-    if (nums % 2 == 0) {
-      const element = document.querySelector('.polic')
-      element.classList.remove('polic')
-    } else {
-      const element = document.querySelector('.polic-on')
-      element.classList.add('polic')
-    }
-  }
+  const productData = {
+    name: 'پیکان سفید',
+    category: 'خودرو',
+    phoneNumber: '014548585',
+    city: 'تبریز',
+    isExchangeable: false,
+    condition: 'درحد نو',
+    price: 197000000,
+    imageUrl: '/4.jpg',
+    description: 'بسیار زیبا و با دوام من ازش خیلی راضی بودم خوش به سعادت خریدارش',
+  };
 
-  const router = useRouter()
-  const id = router.query.id
-  const db = data.find(res => res._id == id)
-  console.log(db)
-  if (id) {
-    return (
-      <div className="row">
-        {isLoding ? (
-          <p>بارگیری</p>
-        ) : (
-          <div className="row">
-            <div className="col-1"></div>
-            <div className="col-5 div-box-url">
-              <h3 className="titel-box-url box-url">
-                {db.name},{db.daste}
-              </h3>
-              <h5 className="box-url ">لحظاتی پیش در {db.city}</h5>
-              <hr />
-              <div className="row">
-                <FaExclamationTriangle className="icon-box-url-1 col-2" />
+  return (
+    <div className="flex flex-row">
+      {isLoding ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          {db ? (
+            <>
+              <motion.div
+                initial={{ x: -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 3 }}
+                transition={{ duration: 0.5 }}
+                className="w-1/2 h-full shadow-2xl rounded-lg"
+              >
+                <img src={`/${db.img}.jpg`} alt={productData.name} className="w-full h-full object-cover rounded-lg" />
+              </motion.div>
 
-                <span className=" col-7">زنگ خطرهای قبل از معامله</span>
-                <FaArrowLeft className="icon-box-url-2 col-2" />
-              </div>
+              <motion.div
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="w-1/2 p-8 shadow-2xl rounded-lg"
+              >
+                <div className="grid grid-cols-2">
+                  <div className="col-span-1">
+                    <div className="w-48 h-20 mt-2 mr-2 bg-[#656ED3] flex justify-center items-center text-white transform transition duration-300 ease-in-out hover:scale-105 rounded-xl">
+                      <h2 className="text-2xl mt-4 text-white font-bold mb-4">{db.name}</h2>
+                    </div>
+                    <div className="w-48 h-20 mt-2 mr-2 bg-[#656ED3] flex justify-center items-center text-white transform transition duration-300 ease-in-out hover:scale-105 rounded-xl">
+                      <p className="mb-2">{db.daste}</p>
+                    </div>
+                    <div className="w-48 h-20 mt-2 mr-2 bg-[#656ED3] flex justify-center items-center text-white transform transition duration-300 ease-in-out hover:scale-105 rounded-xl">
+                      <p className="mb-2">شماره تماس: {db.number}</p>
+                    </div>
+                    <div className="flex items-center mr-2 w-48 h-20 mt-2 bg-[#656ED3] justify-center text-white transform transition duration-300 ease-in-out hover:scale-105 rounded-xl">
+                      {Array.from({ length: randomNumber }, (_, index) => (
+                        <FaStar key={index} className="text-yellow-500" />
+                      ))}
+                      {Array.from({ length: 5 - randomNumber }, (_, index) => (
+                        <FaStar key={index} className="text-gray-300" />
+                      ))}
+                    </div>
+                  </div>
+                  <div className="col-span-1 justify-center">
+                    <div className="w-48 h-20 mt-2 mr-2 bg-[#656ED3] flex justify-center items-center text-white transform transition duration-300 ease-in-out hover:scale-105 rounded-xl">
+                      <p className="mb-2">{db.price} تومان</p>
+                    </div>
+                    <div className="w-48 h-20 mt-2 mr-2 bg-[#656ED3] flex justify-center items-center text-white transform transition duration-300 ease-in-out hover:scale-105 rounded-xl">
+                      <p className="mb-2">{db.city}</p>
+                    </div>
+                    <div className="w-48 h-20 mt-2 mr-2 bg-[#656ED3] flex justify-center items-center text-white transform duration-300 ease-in-out hover:scale-105 rounded-xl">
+                      <p className="mb-2">معاوضه: {db.transfree}</p>
+                    </div>
+                    <div className="flex items-center mr-2 w-48 h-20 mt-2 bg-[#656ED3] justify-center text-white transform duration-300 ease-in-out hover:scale-105 rounded-xl">
+                      <p className="mb-2">وضعیت: {db.condition}</p>
+                    </div>
+                  </div>
+                </div>
 
-              <hr />
+                <motion.p
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="mb-4 shadow-lg rounded-lg p-4"
+                >
+                  {db.text}
+                </motion.p>
+              </motion.div>
               <div>
-                <button onClick={polic} className="bttn-box-url box-url">
-                  اطلاعات تماس
-                </button>
-              </div>
-              <div className="polic polic-on row">
-                <div className="po row">
-                  <span className="col-8">شماره تماس : </span>
-                  <span className="span-box-url col-4">{db.num}</span>
-                </div>
-                <div className="pol">
-                  <p>هشدار پلیس</p>
-                  <p>
-                    لطفاً پیش از انجام معامله و هر نوع پرداخت وجه، از صحت کالا
-                    یا خدمات ارائه‌شده، به‌صورت حضوری اطمینان حاصل نمایید.
-                  </p>
-                </div>
-              </div>
-              <hr></hr>
-              <div className="row">
-                <FaInfoCircle className="col-2 icon" />
-                <span className="col-2"> توضیحات</span>
-                <span className="col-4"></span>
-              </div>
-              <div className="span-fr">
-                <span className="col ">{db.text}</span>
-              </div>
-              <hr></hr>
-            </div>
-            <div className="col-5 img-box-url">
-              <img className="img-fluid " src={'/' + db.img + '.jpg'}></img>
-              <hr className="hr-box-url"></hr>
-              <div className="row">
-                <FaMoneyBill className="col-2 icon" />
-                <span className="col-2">قیمت</span>
-                <span className="col-4"></span>
-                <span className="col-4">{db.pric} تومان</span>
-              </div>
-              <hr></hr>
-              <div className="row">
-                <FaCity className="col-2 icon" />
-                <span className="col-2">شهر</span>
-                <span className="col-4"></span>
-                <span className="col-4">{db.city}</span>
-              </div>
-              <hr></hr>
-              <div className="row">
-                <FaList className="col-2 icon" />
-                <span className="col-3">دسته بندی</span>
-                <span className="col-3"></span>
-                <span className="col-4">{db.daste}</span>
-              </div>
-              <hr></hr>
-              <div className="row">
-                <FaExchangeAlt className="col-2 icon" />
-                <span className="col-2"> معاوضه</span>
-                <span className="col-4"></span>
-                <span className="col-4">{db.transfree}</span>
-              </div>
-              <hr></hr>
-              <div className="row">
-                <FaStar className="col-2 icon" />
-                <span className="col-2"> وضعیت</span>
-                <span className="col-4"></span>
-                <span className="col-4">{db.condition}</span>
-              </div>
-              <hr></hr>
-            </div>
 
-            <div className="col-1"></div>
-          </div>
-        )}
-      </div>
-    )
-  } else {
-    ;<div>وجود ندارد</div>
-  }
-}
+              <Fetchcomment id={id}/>
+              <CommentBox id={id}></CommentBox>
+              </div>
+            </>
+          ) : (
+            <p>There was an error fetching the data.</p>
+            )}
+        </>
+      )}
+    </div>
+  );
+};
+
+export default ProductPage;

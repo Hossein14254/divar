@@ -28,7 +28,21 @@
 body {
     font-family: 'Vazirmatn-Black', sans-serif;
 }
+
 .zarafe{
     background-color: rgb(256, 256, 256,0.3);
     }
 }
+/* زوم به 80٪ اگر مسیر "/admin" باشد */
+@supports ((-webkit-touch-callout: none) or (-webkit-overflow-scrolling: touch)) and (not (overflow-anchor: none)) {
+    body[data-page^="/admin"] {
+        zoom: 80%;
+    }
+}
+
+/* زوم به 100٪ برای سایر مسیرها */
+body:not([data-page^="/admin"]) {
+    zoom: 100%;
+}
+
+

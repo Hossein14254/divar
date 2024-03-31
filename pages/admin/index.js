@@ -105,11 +105,11 @@ const fetchnumcity=  async () => {
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 h-20 w-[1300px] mt-5 mx-10">
                 <div className=' w-full h-96'>
                     <div className=''>
-                        اخرین آگهی ها
+                        اخرین آگهی ها(3مورد آخر)
                     </div>
                    {agahis ? (
                         <>
-                        {agahis.slice(-4).reverse().map((item) => (
+                        {agahis.slice(-3).reverse().map((item) => (
                         <AgahisDashbodrAdmin key={2} {...item} />
                       ))}
                         </>
@@ -118,7 +118,9 @@ const fetchnumcity=  async () => {
                    )}
                 </div>
                 <div className=' w-full h-96'>
-                  <div>اخرین کامنت ها</div>
+                  <div>اخرین کامنت ها(3مورد آخر)
+
+                  </div>
                   {Comment ? (
                     <>
                         {commentf.slice(-3).reverse().map((item) => (

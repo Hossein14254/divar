@@ -17,6 +17,7 @@
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "cookie": "^0.6.0",
+    "framer-motion": "^11.0.24",
     "jsonwebtoken": "^9.0.2",
     "lottie-react": "^2.4.0",
     "lottie-web": "^5.12.2",

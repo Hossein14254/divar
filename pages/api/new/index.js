@@ -1,11 +1,7 @@
 import mongoose from 'mongoose'
+import connectToDB from '@/configs/db'
 
-mongoose
-  .connect('mongodb://localhost:27017/divar')
-  .then(() => {
-    console.log('connected')
-  })
-  .catch(console.error)
+
 
 const agahiSchema = mongoose.Schema({
   name: { type: String, required: true },
@@ -24,12 +20,8 @@ const Agahi = mongoose.model('agahi', agahiSchema)
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    mongoose
-      .connect('mongodb://localhost:27017/divar')
-      .then(() => {
-        console.log('connected')
-      })
-      .catch(console.error)
+    connectToDB()
+
     try {
       const { name, daste, pric, city, condition, transfree, text, num, img } =
         req.body
@@ -55,3 +47,4 @@ export default async function handler(req, res) {
     res.status(405).json({ error: 'Method Not Allowed' })
   }
 }
+

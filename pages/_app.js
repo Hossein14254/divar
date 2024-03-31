@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import NavbarAdmin from '@/components/navbar'
 import Hederadmin from '@/components/heder'
 import { HiOutlineMenuAlt3 } from 'react-icons/hi';
+import Navbarpage from '@/components/Navbarpage'
 
 
 
@@ -88,17 +89,14 @@ export default function App({ Component, pageProps }) {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <Navbar />
+              <Navbarpage />
             </div>
           </div>
   
           <div className="row">
-            <div className="col-3 div-*indexjs">
-              <List />
-            </div>
-            <div className="col-9 div-*indexjs">
+
               <Component {...pageProps} />
-            </div>
+            
           </div>
         </div>
       )}
